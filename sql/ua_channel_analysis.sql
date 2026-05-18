@@ -8,17 +8,17 @@ SELECT
     platform,
     COUNT(*) AS total_campaigns,
     ROUND(SUM(ad_spend), 2) AS total_spend,
+    ROUND(SUM(revenue), 2) AS total_revenue,
     SUM(impressions) AS total_impressions,
     SUM(clicks) AS total_clicks,
     SUM(conversions) AS total_conversions,
-    ROUND(AVG(ROAS), 2) AS avg_ROAS,
-    ROUND(AVG(CTR), 4) AS avg_CTR,
-    ROUND(AVG(CPC), 2) AS avg_CPC,
-    ROUND(AVG(CPA), 2) AS avg_CPA,
-    ROUND(SUM(conversions) * 100.0 / SUM(clicks), 2) AS conversion_rate_pct
+    ROUND(SUM(revenue) / SUM(ad_spend), 2) AS overall_ROAS,
+    ROUND(SUM(ad_spend) / SUM(conversions), 2) AS CPA,
+    ROUND(SUM(clicks) * 100.0 / SUM(impressions), 2) AS CTR_pct,
+    ROUND(SUM(conversions) * 100.0 / SUM(clicks), 2) AS CVR_pct
 FROM ads_performance
 GROUP BY platform
-ORDER BY avg_ROAS DESC;
+ORDER BY overall_ROAS DESC;
 
 -- 2. Best Performing Campaign Types per Platform
 SELECT
